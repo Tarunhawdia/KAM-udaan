@@ -6,6 +6,11 @@ interface ILead extends Document {
   status: "new" | "in-progress" | "won" | "lost";
   createdAt: Date;
   updatedAt: Date;
+  callFrequency: "daily" | "weekly" | "monthly";
+  nextCallDate: Date;
+  ordersPlaced: number; // Track number of orders placed
+  orderingFrequency: number; // Track ordering frequency
+  lastOrderDate: Date; // Track last order date
 }
 
 const LeadSchema: Schema = new Schema(
@@ -23,7 +28,9 @@ const LeadSchema: Schema = new Schema(
       required: true,
     },
     nextCallDate: { type: Date, required: true },
-    // other fields...
+    ordersPlaced: { type: Number, default: 0 }, // New field for orders
+    orderingFrequency: { type: Number, default: 0 }, // New field for ordering frequency
+    lastOrderDate: { type: Date, default: null }, // New field for last order date
   },
   { timestamps: true }
 );

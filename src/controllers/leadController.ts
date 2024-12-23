@@ -65,3 +65,35 @@ export const getLeadsForToday = async (req: Request, res: Response) => {
     }
   }
 };
+
+// Track performance based on orders and frequency
+export const trackPerformance = async (req: Request, res: Response) => {
+  try {
+    // Set up criteria to check for performance
+    const oneMonthAgo = new Date();
+    oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1); // 1 month ago
+
+    // Query to get underperforming leads (leads that haven't placed an order in the last month)
+    const underperformingLeads = await Lead.find({
+      lastOrderDate: { $lt: oneMonthAgo }, // More than 1 month since last order
+      ordersPlaced: { $gt: 0 }, // Has placed orders but not recently
+    });
+
+    // Query to get well-performing leads (high ordering frequency)
+    const wellPerformingLeads = await Lead.find({
+      orderingFrequency: { $gte: 5 }, // Consider those with ordering frequency of 5 or more
+    });
+
+    // Return the performance results
+    res.status(200).json({
+      underperformingLeads,
+      wellPerformingLeads,
+    });
+  } catch (error) {
+    if (error instanceof Error) {
+      res.status(500).json({ error: error.message });
+    } else {
+      res.status(500).json({ error: "An unknown error occurred" });
+    }
+  }
+};
