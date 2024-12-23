@@ -1,18 +1,50 @@
 import express from "express";
-import cors from "cors";
-import helmet from "helmet";
+import connectDB from "./config/database";
+import dotenv from "dotenv";
+import { Lead, POC } from "./models";
+import interactionRoutes from "./routes/interactionRoutes";
 
 const app = express();
 
 // Middleware
 app.use(express.json());
-app.use(cors());
-app.use(helmet());
+// Use the interaction routes
+app.use("/api/interactions", interactionRoutes);
+dotenv.config();
 
-// Health Check
-app.get("/health", (req, res) => {
-  res.status(200).json({ message: "Server is healthy" });
+// Connect to Database
+connectDB();
+
+// Placeholder for routes
+app.get("/", (req, res) => {
+  res.send("KAM Lead Management System API is running...");
 });
 
-// TODO: Add API routes here
+// Test route to add a new lead
+app.post("/api/test", async (req, res) => {
+  try {
+    // Create a lead
+    const lead = await Lead.create({
+      name: "Sample Restaurant",
+      address: "123 Main St",
+    });
+
+    // Add a Point of Contact for the lead
+    const poc = await POC.create({
+      leadId: lead._id,
+      name: "John Doe",
+      role: "Manager",
+      contactInfo: "john.doe@example.com",
+    });
+
+    res.status(201).json({ lead, poc });
+  } catch (error) {
+    if (error instanceof Error) {
+      res.status(500).json({ error: error.message });
+    } else {
+      res.status(500).json({ error: "An unknown error occurred" });
+    }
+  }
+});
+
 export default app;
