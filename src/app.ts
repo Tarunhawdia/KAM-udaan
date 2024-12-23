@@ -3,6 +3,7 @@ import connectDB from "./config/database";
 import dotenv from "dotenv";
 import { Lead, POC } from "./models";
 import interactionRoutes from "./routes/interactionRoutes";
+import leadRoutes from "./routes/leadRoutes";
 
 const app = express();
 
@@ -10,6 +11,8 @@ const app = express();
 app.use(express.json());
 // Use the interaction routes
 app.use("/api/interactions", interactionRoutes);
+app.use("/api/leads", leadRoutes);
+
 dotenv.config();
 
 // Connect to Database
