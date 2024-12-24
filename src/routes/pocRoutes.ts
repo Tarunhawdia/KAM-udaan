@@ -1,23 +1,17 @@
-import express from "express";
+import { Router } from "express";
 import {
   addPOC,
   getPOCsForLead,
   updatePOC,
   deletePOC,
 } from "../controllers/pocController";
+import authenticateToken from "../middlewares/auth";
 
-const router = express.Router();
+const router = Router();
 
-// Route to add a new POC for a lead
-router.post("/:leadId/pocs", addPOC);
-
-// Route to get all POCs for a specific lead
-router.get("/:leadId/pocs", getPOCsForLead);
-
-// Route to update a specific POC
-router.put("/pocs/:id", updatePOC);
-
-// Route to delete a specific POC
-router.delete("/pocs/:id", deletePOC);
+router.post("/:leadId", authenticateToken, addPOC);
+router.get("/:leadId", authenticateToken, getPOCsForLead);
+router.put("/:id", authenticateToken, updatePOC);
+router.delete("/:id", authenticateToken, deletePOC);
 
 export default router;
