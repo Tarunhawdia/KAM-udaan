@@ -5,6 +5,7 @@ import { Lead, POC } from "./models";
 import interactionRoutes from "./routes/interactionRoutes";
 import leadRoutes from "./routes/leadRoutes";
 import pocRoutes from "./routes/pocRoutes";
+import errorHandler from "./middlewares/errorHandler";
 
 const app = express();
 
@@ -16,6 +17,7 @@ app.use("/api/leads", leadRoutes);
 app.use("/api/poc", pocRoutes);
 
 dotenv.config();
+app.use(errorHandler);
 
 // Connect to Database
 connectDB();
