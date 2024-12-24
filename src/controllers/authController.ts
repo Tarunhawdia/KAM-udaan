@@ -4,7 +4,7 @@ import bcrypt from "bcryptjs";
 import User from "../models/User";
 
 // Register user and generate JWT token
-const registerUser = async (req: Request, res: Response) => {
+const registerUser = async (req: Request, res: Response): Promise<void> => {
   const { username, password } = req.body;
 
   try {
@@ -28,19 +28,20 @@ const registerUser = async (req: Request, res: Response) => {
 };
 
 // Login user and generate JWT token
-const loginUser = async (req: Request, res: Response) => {
+const loginUser = async (req: Request, res: Response): Promise<void> => {
   const { username, password } = req.body;
 
   try {
-    const user = await User.findOne({ username });
+    const user: any = await User.findOne({ username });
 
     if (!user) {
-      return res.status(400).json({ message: "Invalid credentials" });
+      res.status(400).json({ message: "Invalid credentials" });
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res.status(400).json({ message: "Invalid credentials" });
+      res.status(400).json({ message: "Invalid credentials" });
+      return;
     }
 
     // Create JWT token
@@ -50,10 +51,10 @@ const loginUser = async (req: Request, res: Response) => {
       { expiresIn: "1h" }
     );
 
-    res.json({ token });
+    res.json({ token }); // Send response without returning it
   } catch (error) {
     res.status(500).json({ message: "Server error" });
   }
 };
 
-export { registerUser, loginUser };
+export { loginUser, registerUser };
