@@ -27,6 +27,7 @@ const LeadSchema: Schema = new Schema(
       enum: ["daily", "weekly", "monthly"],
       required: true,
     },
+    pocs: [{ type: Schema.Types.ObjectId, ref: "POC" }],
     nextCallDate: { type: Date, required: true },
     ordersPlaced: { type: Number, default: 0 }, // New field for orders
     orderingFrequency: { type: Number, default: 0 }, // New field for ordering frequency

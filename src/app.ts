@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import { Lead, POC } from "./models";
 import interactionRoutes from "./routes/interactionRoutes";
 import leadRoutes from "./routes/leadRoutes";
+import pocRoutes from "./routes/pocRoutes";
 
 const app = express();
 
@@ -12,6 +13,7 @@ app.use(express.json());
 // Use the interaction routes
 app.use("/api/interactions", interactionRoutes);
 app.use("/api/leads", leadRoutes);
+app.use("/api/poc", pocRoutes);
 
 dotenv.config();
 
