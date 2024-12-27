@@ -66,25 +66,27 @@ export const getLeadsForToday = async (req: Request, res: Response) => {
   }
 };
 
-// Track performance based on orders and frequency
 export const trackPerformance = async (req: Request, res: Response) => {
   try {
-    // Set up criteria to check for performance
     const oneMonthAgo = new Date();
-    oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1); // 1 month ago
+    oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
 
-    // Query to get underperforming leads (leads that haven't placed an order in the last month)
+    // Log the calculated date for debugging
+    console.log("One Month Ago:", oneMonthAgo);
+
+    // Debug query results for underperforming leads
     const underperformingLeads = await Lead.find({
-      lastOrderDate: { $lt: oneMonthAgo }, // More than 1 month since last order
-      ordersPlaced: { $gt: 0 }, // Has placed orders but not recently
+      lastOrderDate: { $lt: oneMonthAgo },
+      ordersPlaced: { $gt: 0 },
     });
+    console.log("Underperforming Leads Query Result:", underperformingLeads);
 
-    // Query to get well-performing leads (high ordering frequency)
+    // Debug query results for well-performing leads
     const wellPerformingLeads = await Lead.find({
-      orderingFrequency: { $gte: 5 }, // Consider those with ordering frequency of 5 or more
+      orderingFrequency: { $gte: 5 },
     });
+    console.log("Well-Performing Leads Query Result:", wellPerformingLeads);
 
-    // Return the performance results
     res.status(200).json({
       underperformingLeads,
       wellPerformingLeads,

@@ -27,31 +27,4 @@ app.get("/", (req, res) => {
   res.send("KAM Lead Management System API is running...");
 });
 
-// Test route to add a new lead
-app.post("/api/test", async (req, res) => {
-  try {
-    // Create a lead
-    const lead = await Lead.create({
-      name: "Sample Restaurant",
-      address: "123 Main St",
-    });
-
-    // Add a Point of Contact for the lead
-    const poc = await POC.create({
-      leadId: lead._id,
-      name: "John Doe",
-      role: "Manager",
-      contactInfo: "john.doe@example.com",
-    });
-
-    res.status(201).json({ lead, poc });
-  } catch (error) {
-    if (error instanceof Error) {
-      res.status(500).json({ error: error.message });
-    } else {
-      res.status(500).json({ error: "An unknown error occurred" });
-    }
-  }
-});
-
 export default app;
