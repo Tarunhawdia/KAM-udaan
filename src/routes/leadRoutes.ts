@@ -1,11 +1,9 @@
-import express from "express";
-import {
-  addLead,
-  getLeadsForToday,
-  trackPerformance,
-} from "../controllers/leadController";
+import { Router } from "express";
+import { addLead, trackPerformance } from "../controllers/leadController";
+import { getLeadsForToday } from "../controllers/leadController";
+import { getAllLeads } from "../controllers/leadController";
 
-const router = express.Router();
+const router = Router();
 
 // Route for adding a new lead
 router.post("/add", addLead);
@@ -15,5 +13,8 @@ router.get("/calls-today", getLeadsForToday);
 
 // Route for tracking lead performance (well-performing and underperforming)
 router.get("/performance", trackPerformance);
+
+// Route for fetching all leads
+router.get("/", getAllLeads);
 
 export default router;

@@ -1,5 +1,22 @@
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
+
 import Lead from "../models/Lead";
+
+export const getAllLeads = async (req: Request, res: Response) => {
+  try {
+    const leads = await Lead.find();
+    res.status(200).json(leads);
+    return;
+  } catch (error) {
+    if (error instanceof Error) {
+      res.status(500).json({ error: error.message });
+      return;
+    } else {
+      res.status(500).json({ error: "An unknown error occurred" });
+      return;
+    }
+  }
+};
 
 // Add a new lead
 export const addLead = async (req: Request, res: Response) => {
@@ -47,22 +64,32 @@ export const addLead = async (req: Request, res: Response) => {
 };
 
 // Get leads requiring calls today
-export const getLeadsForToday = async (req: Request, res: Response) => {
-  try {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0); // Set to the start of today
 
+export const getLeadsForToday = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    // Get current date, set to midnight (00:00:00) for proper comparison
+    const currentDate = new Date();
+    currentDate.setHours(0, 0, 0, 0);
+
+    // Get leads that have `nextCallDate` less than or equal to today (midnight)
     const leads = await Lead.find({
-      nextCallDate: { $lte: today }, // Find leads whose next call date is today or earlier
+      nextCallDate: { $lte: currentDate }, // Correct comparison
     });
 
-    res.status(200).json(leads);
-  } catch (error) {
-    if (error instanceof Error) {
-      res.status(500).json({ error: error.message });
-    } else {
-      res.status(500).json({ error: "An unknown error occurred" });
+    if (leads.length === 0) {
+      res.status(404).json({ message: "No leads to call today." });
+      return;
     }
+
+    res.status(200).json({ leads });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error retrieving leads for today.", error });
   }
 };
 
@@ -71,27 +98,47 @@ export const trackPerformance = async (req: Request, res: Response) => {
     const oneMonthAgo = new Date();
     oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
 
-    // Log the calculated date for debugging
     console.log("One Month Ago:", oneMonthAgo);
 
-    // Debug query results for underperforming leads
-    const underperformingLeads = await Lead.find({
-      lastOrderDate: { $lt: oneMonthAgo },
-      ordersPlaced: { $gt: 0 },
-    });
+    // Step 1: Debugging query for underperforming leads
+    const underperformingQuery = {
+      $or: [
+        { lastOrderDate: { $lt: oneMonthAgo } }, // Last order older than one month
+        { lastOrderDate: { $exists: false } }, // No last order date
+      ],
+      ordersPlaced: { $gt: 0 }, // Only leads with orders placed
+    };
+
+    console.log(
+      "Underperforming Leads Query:",
+      JSON.stringify(underperformingQuery, null, 2)
+    );
+
+    // Query for underperforming leads
+    const underperformingLeads = await Lead.find(underperformingQuery);
     console.log("Underperforming Leads Query Result:", underperformingLeads);
 
-    // Debug query results for well-performing leads
-    const wellPerformingLeads = await Lead.find({
-      orderingFrequency: { $gte: 5 },
-    });
+    // Step 2: Debugging query for well-performing leads
+    const wellPerformingQuery = {
+      ordersPlaced: { $gte: 5 }, // Leads with more than 5 orders placed
+    };
+
+    console.log(
+      "Well-Performing Leads Query:",
+      JSON.stringify(wellPerformingQuery, null, 2)
+    );
+
+    // Query for well-performing leads
+    const wellPerformingLeads = await Lead.find(wellPerformingQuery);
     console.log("Well-Performing Leads Query Result:", wellPerformingLeads);
 
+    // Step 3: Respond with data
     res.status(200).json({
       underperformingLeads,
       wellPerformingLeads,
     });
   } catch (error) {
+    console.error("Error in trackPerformance:", error);
     if (error instanceof Error) {
       res.status(500).json({ error: error.message });
     } else {
