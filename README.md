@@ -71,15 +71,16 @@ Fetches all leads in the system.
 Adds a Point of Contact (POC) to an existing lead by its ID.
 
 **Request Body**:
+
 ```
 json
-{  
-  "name": "Jane Smith",    
-"role": "Sales Manager",   
- "email": "janesmith@example.com",  
-  "phone": "+1234567890" 
+{
+  "name": "Jane Smith",
+"role": "Sales Manager",
+ "email": "janesmith@example.com",
+  "phone": "+1234567890"
  }
- ```
+```
 
 #### Get POCs for a Lead
 
@@ -111,13 +112,13 @@ Adds an interaction (e.g., call, meeting) for a lead.
 
 ```
 json
-{    
-"leadId": "60d21b4667d0d8992e610c85",    
+{
+"leadId": "60d21b4667d0d8992e610c85",
 "interactionType": "call",
-    "interactionDate": "2024-12-25T10:00:00Z",   
- "notes": "Discussed the product's features"  
+    "interactionDate": "2024-12-25T10:00:00Z",
+ "notes": "Discussed the product's features"
 }
- ```
+```
 
 ## Setup and Installation
 
@@ -128,15 +129,21 @@ json
 
 ### Installation
 
-1.  bashCopy codegit clone https://github.com/your-repository/lead-management-api.gitcd lead-management-api
-2.  bashCopy codenpm install
-3.  envCopy codeMONGO_URI=your_mongo_database_urlPORT=5000JWT_SECRET=your_jwt_secret_key
-4.  bashCopy codenpm start
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/your-repository/lead-management-api.git
+   cd lead-management-api
+   npm install
+   MONGO_URI=your_mongo_database_urlPORT=5000JWT_SECRET=your_jwt_secret_key
+   npm start
+   ```
 
 The API will be running at http://localhost:5000.
-
-
 
 ## Error Handling
 
 All errors are handled by the errorHandler middleware, which catches errors thrown during the request cycle and returns appropriate HTTP status codes and error messages.
+
+```
+
+```
