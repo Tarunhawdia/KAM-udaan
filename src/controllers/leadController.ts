@@ -64,20 +64,28 @@ export const addLead = async (req: Request, res: Response) => {
 };
 
 // Get leads requiring calls today
-
 export const getLeadsForToday = async (
   req: Request,
   res: Response,
   next: NextFunction
 ): Promise<void> => {
   try {
-    // Get current date, set to midnight (00:00:00) for proper comparison
     const currentDate = new Date();
-    currentDate.setHours(0, 0, 0, 0);
+    currentDate.setHours(0, 0, 0, 0); // Start of today (00:00:00)
 
-    // Get leads that have `nextCallDate` less than or equal to today (midnight)
+    const endOfToday = new Date(currentDate);
+    endOfToday.setHours(23, 59, 59, 999); // End of today (23:59:59)
+
+    // Query for leads that need to be called today
     const leads = await Lead.find({
-      nextCallDate: { $lte: currentDate }, // Correct comparison
+      $or: [
+        {
+          nextCallDate: { $gte: currentDate, $lte: endOfToday }, // Leads with nextCallDate today
+        },
+        {
+          callFrequency: "daily", // Leads with daily call frequency
+        },
+      ],
     });
 
     if (leads.length === 0) {
