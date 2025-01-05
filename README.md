@@ -134,8 +134,12 @@ json
    git clone https://github.com/your-repository/lead-management-api.git
    cd lead-management-api
    npm install
-   MONGO_URI=your_mongo_database_urlPORT=5000JWT_SECRET=your_jwt_secret_key
-   npm start
+   ```
+2. Env setup
+   ```env
+   MONGO_URI=your_mongo_database_url
+   PORT=5000
+   JWT_SECRET=your_jwt_secret_key
    ```
 
 The API will be running at http://localhost:5000.
