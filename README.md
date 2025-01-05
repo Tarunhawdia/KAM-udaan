@@ -4,6 +4,45 @@
 
 The Lead Management API provides functionality to manage leads, schedule calls, track interactions, and handle Points of Contact (POC) for each lead. This API supports managing leads across different time zones and ensures accurate scheduling for calls and meetings. The system includes features for adding, updating, retrieving leads, managing POCs, and tracking lead performance.
 
+## System Requirements
+
+- Node.js (v16.x or higher)
+- MongoDB (v6.0 or higher)
+- TypeScript (v5.7.2 or higher)
+- npm (v8.x or higher)
+
+## Running Instructions
+
+### Development Mode
+
+Run the application in development mode with hot-reloading:
+
+```bash
+npm run dev
+```
+
+The server will start on http://localhost:3000 (or the port specified in your .env file)
+
+### Production Mode
+
+1. Build the application:
+
+```bash
+npm run build
+```
+
+2. Start the production server:
+
+```bash
+npm start
+```
+
+### Available Scripts
+
+- `npm run build`: Compiles TypeScript code to JavaScript
+- `npm start`: Runs the compiled application
+- `npm run dev`: Runs the application in development mode with hot-reloading
+
 ## Features
 
 - **Leads Management**: Add, update, and retrieve leads.
