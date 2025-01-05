@@ -20,7 +20,6 @@ The Lead Management API provides functionality to manage leads, schedule calls, 
 - **Libraries**:
 
   - **Mongoose** for database interaction
-  - **date-fns-tz** for timezone management
 
 ## API Endpoints
 
@@ -32,9 +31,18 @@ The Lead Management API provides functionality to manage leads, schedule calls, 
 
 Adds a new lead to the system with details like name, address, status, call frequency, and timezone.
 
-**Request Body**:
+**Request Body**
 
-Plain textANTLR4BashCC#CSSCoffeeScriptCMakeDartDjangoDockerEJSErlangGitGoGraphQLGroovyHTMLJavaJavaScriptJSONJSXKotlinLaTeXLessLuaMakefileMarkdownMATLABMarkupObjective-CPerlPHPPowerShell.propertiesProtocol BuffersPythonRRubySass (Sass)Sass (Scss)SchemeSQLShellSwiftSVGTSXTypeScriptWebAssemblyYAMLXML` jsonCopy code{    "name": "John Doe",    "address": "123 Elm Street",    "status": "new",    "callFrequency": "daily",    "nextCallDate": "2024-12-25T10:00:00Z",    "timezone": "America/New_York"  } `
+```json
+{
+  "name": "John Doe",
+  "address": "123 Elm Street",
+  "status": "new",
+  "callFrequency": "daily",
+  "nextCallDate": "2024-12-25T10:00:00Z",
+  "timezone": "America/New_York"
+}
+```
 
 #### Get Leads for Today
 
@@ -63,8 +71,15 @@ Fetches all leads in the system.
 Adds a Point of Contact (POC) to an existing lead by its ID.
 
 **Request Body**:
-
-Plain textANTLR4BashCC#CSSCoffeeScriptCMakeDartDjangoDockerEJSErlangGitGoGraphQLGroovyHTMLJavaJavaScriptJSONJSXKotlinLaTeXLessLuaMakefileMarkdownMATLABMarkupObjective-CPerlPHPPowerShell.propertiesProtocol BuffersPythonRRubySass (Sass)Sass (Scss)SchemeSQLShellSwiftSVGTSXTypeScriptWebAssemblyYAMLXML` jsonCopy code{    "name": "Jane Smith",    "role": "Sales Manager",    "email": "janesmith@example.com",    "phone": "+1234567890"  } `
+```
+json
+{  
+  "name": "Jane Smith",    
+"role": "Sales Manager",   
+ "email": "janesmith@example.com",  
+  "phone": "+1234567890" 
+ }
+ ```
 
 #### Get POCs for a Lead
 
@@ -94,7 +109,15 @@ Adds an interaction (e.g., call, meeting) for a lead.
 
 **Request Body**:
 
-Plain textANTLR4BashCC#CSSCoffeeScriptCMakeDartDjangoDockerEJSErlangGitGoGraphQLGroovyHTMLJavaJavaScriptJSONJSXKotlinLaTeXLessLuaMakefileMarkdownMATLABMarkupObjective-CPerlPHPPowerShell.propertiesProtocol BuffersPythonRRubySass (Sass)Sass (Scss)SchemeSQLShellSwiftSVGTSXTypeScriptWebAssemblyYAMLXML` jsonCopy code{    "leadId": "60d21b4667d0d8992e610c85",    "interactionType": "call",    "interactionDate": "2024-12-25T10:00:00Z",    "notes": "Discussed the product's features"  } `
+```
+json
+{    
+"leadId": "60d21b4667d0d8992e610c85",    
+"interactionType": "call",
+    "interactionDate": "2024-12-25T10:00:00Z",   
+ "notes": "Discussed the product's features"  
+}
+ ```
 
 ## Setup and Installation
 
@@ -112,9 +135,7 @@ Plain textANTLR4BashCC#CSSCoffeeScriptCMakeDartDjangoDockerEJSErlangGitGoGraphQL
 
 The API will be running at http://localhost:5000.
 
-## Folder Structure
 
-Plain textANTLR4BashCC#CSSCoffeeScriptCMakeDartDjangoDockerEJSErlangGitGoGraphQLGroovyHTMLJavaJavaScriptJSONJSXKotlinLaTeXLessLuaMakefileMarkdownMATLABMarkupObjective-CPerlPHPPowerShell.propertiesProtocol BuffersPythonRRubySass (Sass)Sass (Scss)SchemeSQLShellSwiftSVGTSXTypeScriptWebAssemblyYAMLXML` bashCopy code├── config  │   ├── database.js        # MongoDB connection setup  │   └── sync.js            # Sync database setup  ├── controllers  │   ├── interactionController.js   # Logic for handling interactions  │   ├── leadController.js          # Logic for handling leads  │   └── pocController.js           # Logic for handling Points of Contact (POC)  ├── middlewares  │   ├── errorHandler.js     # Global error handling middleware  │   └── auth.js             # JWT authentication middleware  ├── models  │   ├── Lead.js             # Lead model schema  │   ├── POC.js              # POC model schema  │   └── interaction.js      # Interaction model schema  ├── routes  │   ├── interactionRoutes.js   # Interaction-related routes  │   ├── leadRoutes.js          # Lead-related routes  │   └── pocRoutes.js           # POC-related routes  ├── app.js                   # Main app entry point  ├── package.json             # Project dependencies  └── .env                     # Environment variables `
 
 ## Error Handling
 
