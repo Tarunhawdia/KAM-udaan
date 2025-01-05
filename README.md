@@ -38,9 +38,7 @@ Adds a new lead to the system with details like name, address, status, call freq
   "name": "John Doe",
   "address": "123 Elm Street",
   "status": "new",
-  "callFrequency": "daily",
-  "nextCallDate": "2024-12-25T10:00:00Z",
-  "timezone": "America/New_York"
+  "callFrequency": "daily"
 }
 ```
 
