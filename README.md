@@ -2,29 +2,25 @@
 
 ## Overview
 
-The Lead Management API provides functionality to manage leads, schedule calls, and track interactions. It includes features like adding Points of Contact (POC), scheduling calls across different timezones, and managing interactions.
-
----
+The Lead Management API provides functionality to manage leads, schedule calls, track interactions, and handle Points of Contact (POC) for each lead. This API supports managing leads across different time zones and ensures accurate scheduling for calls and meetings. The system includes features for adding, updating, retrieving leads, managing POCs, and tracking lead performance.
 
 ## Features
 
-- Add, update, and retrieve leads.
-- Manage Points of Contact (POC) for each lead.
-- Schedule calls with timezone support.
-- Track interactions (e.g., meetings, calls).
-- Automated handling of timezones for accurate scheduling.
-
----
+- **Leads Management**: Add, update, and retrieve leads.
+- **Points of Contact (POC)**: Manage POCs for each lead.
+- **Scheduling Calls**: Schedule calls with timezone support, ensuring accurate scheduling across different time zones.
+- **Interactions Tracking**: Track lead interactions (e.g., meetings, calls).
+- **Performance Tracking**: Track and categorize leads based on their performance.
+- **Timezone Support**: Automated handling of timezones for accurate scheduling.
 
 ## Technologies Used
 
 - **Backend**: Node.js with Express.js
 - **Database**: MongoDB (NoSQL)
 - **Libraries**:
-  - Mongoose for database interaction
-  - date-fns-tz for timezone management
 
----
+  - **Mongoose** for database interaction
+  - **date-fns-tz** for timezone management
 
 ## API Endpoints
 
@@ -32,15 +28,94 @@ The Lead Management API provides functionality to manage leads, schedule calls, 
 
 #### Add a Lead
 
-**POST** `/api/leads`
+**POST** /api/leads/add
 
-```json
-{
-  "name": "John Doe",
-  "address": "123 Elm Street",
-  "status": "new",
-  "callFrequency": "daily",
-  "nextCallDate": "2024-12-25T10:00:00Z",
-  "timezone": "America/New_York"
-}
-```
+Adds a new lead to the system with details like name, address, status, call frequency, and timezone.
+
+**Request Body**:
+
+Plain textANTLR4BashCC#CSSCoffeeScriptCMakeDartDjangoDockerEJSErlangGitGoGraphQLGroovyHTMLJavaJavaScriptJSONJSXKotlinLaTeXLessLuaMakefileMarkdownMATLABMarkupObjective-CPerlPHPPowerShell.propertiesProtocol BuffersPythonRRubySass (Sass)Sass (Scss)SchemeSQLShellSwiftSVGTSXTypeScriptWebAssemblyYAMLXML` jsonCopy code{    "name": "John Doe",    "address": "123 Elm Street",    "status": "new",    "callFrequency": "daily",    "nextCallDate": "2024-12-25T10:00:00Z",    "timezone": "America/New_York"  } `
+
+#### Get Leads for Today
+
+**GET** /api/leads/calls-today
+
+Fetches all leads that require a call today, considering time zones.
+
+#### Track Lead Performance
+
+**GET** /api/leads/performance
+
+Tracks and categorizes leads based on performance, such as well-performing and underperforming leads.
+
+#### Get All Leads
+
+**GET** /api/leads
+
+Fetches all leads in the system.
+
+### Points of Contact (POC)
+
+#### Add POC to a Lead
+
+**POST** /api/poc/:leadId
+
+Adds a Point of Contact (POC) to an existing lead by its ID.
+
+**Request Body**:
+
+Plain textANTLR4BashCC#CSSCoffeeScriptCMakeDartDjangoDockerEJSErlangGitGoGraphQLGroovyHTMLJavaJavaScriptJSONJSXKotlinLaTeXLessLuaMakefileMarkdownMATLABMarkupObjective-CPerlPHPPowerShell.propertiesProtocol BuffersPythonRRubySass (Sass)Sass (Scss)SchemeSQLShellSwiftSVGTSXTypeScriptWebAssemblyYAMLXML` jsonCopy code{    "name": "Jane Smith",    "role": "Sales Manager",    "email": "janesmith@example.com",    "phone": "+1234567890"  } `
+
+#### Get POCs for a Lead
+
+**GET** /api/poc/:leadId
+
+Fetches all Points of Contact (POC) associated with a specific lead.
+
+#### Update POC
+
+**PUT** /api/poc/:id
+
+Updates the details of an existing Point of Contact (POC).
+
+#### Delete POC
+
+**DELETE** /api/poc/:id
+
+Deletes a Point of Contact (POC) from the system.
+
+### Interactions
+
+#### Add Interaction
+
+**POST** /api/interactions/add
+
+Adds an interaction (e.g., call, meeting) for a lead.
+
+**Request Body**:
+
+Plain textANTLR4BashCC#CSSCoffeeScriptCMakeDartDjangoDockerEJSErlangGitGoGraphQLGroovyHTMLJavaJavaScriptJSONJSXKotlinLaTeXLessLuaMakefileMarkdownMATLABMarkupObjective-CPerlPHPPowerShell.propertiesProtocol BuffersPythonRRubySass (Sass)Sass (Scss)SchemeSQLShellSwiftSVGTSXTypeScriptWebAssemblyYAMLXML` jsonCopy code{    "leadId": "60d21b4667d0d8992e610c85",    "interactionType": "call",    "interactionDate": "2024-12-25T10:00:00Z",    "notes": "Discussed the product's features"  } `
+
+## Setup and Installation
+
+### Prerequisites
+
+- **Node.js** and **npm** installed on your machine.
+- A **MongoDB** instance running (either locally or remotely).
+
+### Installation
+
+1.  bashCopy codegit clone https://github.com/your-repository/lead-management-api.gitcd lead-management-api
+2.  bashCopy codenpm install
+3.  envCopy codeMONGO_URI=your_mongo_database_urlPORT=5000JWT_SECRET=your_jwt_secret_key
+4.  bashCopy codenpm start
+
+The API will be running at http://localhost:5000.
+
+## Folder Structure
+
+Plain textANTLR4BashCC#CSSCoffeeScriptCMakeDartDjangoDockerEJSErlangGitGoGraphQLGroovyHTMLJavaJavaScriptJSONJSXKotlinLaTeXLessLuaMakefileMarkdownMATLABMarkupObjective-CPerlPHPPowerShell.propertiesProtocol BuffersPythonRRubySass (Sass)Sass (Scss)SchemeSQLShellSwiftSVGTSXTypeScriptWebAssemblyYAMLXML` bashCopy code├── config  │   ├── database.js        # MongoDB connection setup  │   └── sync.js            # Sync database setup  ├── controllers  │   ├── interactionController.js   # Logic for handling interactions  │   ├── leadController.js          # Logic for handling leads  │   └── pocController.js           # Logic for handling Points of Contact (POC)  ├── middlewares  │   ├── errorHandler.js     # Global error handling middleware  │   └── auth.js             # JWT authentication middleware  ├── models  │   ├── Lead.js             # Lead model schema  │   ├── POC.js              # POC model schema  │   └── interaction.js      # Interaction model schema  ├── routes  │   ├── interactionRoutes.js   # Interaction-related routes  │   ├── leadRoutes.js          # Lead-related routes  │   └── pocRoutes.js           # POC-related routes  ├── app.js                   # Main app entry point  ├── package.json             # Project dependencies  └── .env                     # Environment variables `
+
+## Error Handling
+
+All errors are handled by the errorHandler middleware, which catches errors thrown during the request cycle and returns appropriate HTTP status codes and error messages.
